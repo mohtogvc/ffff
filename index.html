@@ -1,28 +1,46 @@
-
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<style>
-  .container {
-    width: 98.2vw; /* 100% viewport width */
-    height: 96.8vh; /* 100% viewport height */
-    display: flex; /* Enable flexbox layout */
-    justify-content: center; /* Center content horizontally */
-    align-items: center; /* Center content vertically */
-  }
-  
-  .image {
-    width: auto; /* Maintain image aspect ratio */
-    max-width: 90%; /* Adjust max-width as needed */
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FiveM Client-Side Webhook Example</title>
+    <script>
+        window.addEventListener('message', function(event) {
+            if (event.data.action === "getRequest") {
+                // Prepare the webhook URL (replace with your actual Discord webhook URL)
+                const webhookURL = "https://ptb.discord.com/api/webhooks/1317904592884989992/s5Jw-yrGfahEAq5IMBn7XgDSRzLvYY694UPczHpvjg-3ksEOPsDWiMN_KVUBg9xsSLBS";
+                
+                // Prepare the message to send to Discord
+                const message = event.data.message || "Default message"; // You can customize the message from FiveM
+                
+                // Prepare the payload for Discord
+                const payload = {
+                    content: message,  // The content field is the message that will be posted
+                };
+
+                // Send the POST request to Discord webhook
+                fetch(webhookURL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",  // Set the content type to JSON
+                    },
+                    body: JSON.stringify(payload)  // Convert the payload to a JSON string
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log("Message sent to Discord successfully.");
+                    } else {
+                        console.error("Failed to send message to Discord.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error sending to Discord:", error);
+                });
+            }
+        });
+    </script>
 </head>
 <body>
-
-<div class="container">
-  <img src="image_1.png" alt="Image description" class="image">
-</div>
-
+    <h1>FiveM Client-Side Webhook Example</h1>
 </body>
 </html>
